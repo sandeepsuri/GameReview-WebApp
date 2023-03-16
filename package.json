@@ -1,0 +1,23 @@
+{
+  "name": "frontend-master-adoptme-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandeepsuri/Frontend-Master-AdoptMe-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sandeepsuri/Frontend-Master-AdoptMe-App/issues"
+  },
+  "homepage": "https://github.com/sandeepsuri/Frontend-Master-AdoptMe-App#readme",
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}
