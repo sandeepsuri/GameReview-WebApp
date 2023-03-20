@@ -1,5 +1,6 @@
-# Frontend-Master-AdoptMe-App
-A pet adoption app created from frontend masters 
+# Game Review Web Application
+
+This is my personal game review site I'm making with the help of the lessons I'm learning from Frontend Masters
 
 This is a project I'm doing based off the React lecture from Frontend Masters. 
 
