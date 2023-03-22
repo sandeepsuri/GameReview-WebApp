@@ -1,10 +1,9 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import Game from './Game'
 
 const CONSOLE = [
-    "PS4", "PS5", 
-    "XBOX ONE", "XBOX SERIES X|S", 
-    "Nintendo Switch"
+    "PC", "PlayStation", "Xbox", "Nintendo", "Apple Macintosh", "Linux"
 ]
 
 const GENRE = [
@@ -13,37 +12,76 @@ const GENRE = [
     "Third Person Shooter"
 ]
 
+
+async function requestGames() {
+    try{
+        const res = await fetch(
+            `https://api.rawg.io/api/games?key=25bb98b15f2e416f94e73a6ee3292733`
+        )
+        const data = await res.json();
+        let gamesList = []
+        data.results.slice(0, 20).forEach(game => {
+            let name = game.name
+            let platform = game.parent_platforms.map(platform => platform.platform.name).join(", ")
+            gamesList.push({name, platform})
+        })        
+        console.log(gamesList)
+    }
+    catch(error) {
+        console.error(error)
+    }
+}
+
+requestGames()
+
+
 const SearchParams = () => {
-    const [game, setGame] = useState("")
-    const [console, setConsole] = useState("")
+    const [platform, setConsole] = useState("")
     const [genre, setGenre] = useState("")
+    const [games, setGames] = useState([])
+    let data;
+
+    useEffect(() => {
+        requestGames()
+    }, [platform])
+
+    async function requestGames() {
+        try{
+            const res = await fetch(
+                `https://api.rawg.io/api/games?`
+            )
+            data = await res.json();
+            let gamesList = []
+
+            data.results.slice(0, 20).forEach(game => {
+            let name = game.name
+            let console = game.parent_platforms.map(platform => platform.platform.name).join(", ")
+            gamesList.push({name, console})
+        })   
+            setGames([...gamesList])
+        }
+        catch(error) {
+            console.error(error)
+        }
+    }
+    
     return (
         <div className="search-params">
             <form>
-                {/* Game Search */}
-                <label htmlFor="game">
-                    Game
-                    <input 
-                        onChange={(e) => setGame(e.target.value)} 
-                        id="game" 
-                        value={game} 
-                        placeholder="Game Name" 
-                    />
-                </label>
                 {/* Console Search */}
                 <label htmlFor="console">
                     Console
                     <select 
                         id="console" 
-                        value={console} 
+                        value={platform} 
                         onChange = {e => {
                             setConsole(e.target.value)
                             setGenre("")
                         }}
                     >
                         <option />
-                        {CONSOLE.map((console) => (
-                            <option key={console}>{console}</option>
+                        {CONSOLE.map((platform) => (
+                            <option key={platform}>{platform}</option>
                         ))}
                     </select>
                 </label>
@@ -66,6 +104,15 @@ const SearchParams = () => {
                 </label>
                 <button>Submit</button>
             </form>
+            {
+                games.map(game => (
+                    <Game 
+                        name={game.name}
+                        platform={game.platform} 
+                        key={game.id} 
+                    />
+                ))
+            }
 
         </div>
     )
