@@ -7,82 +7,84 @@ const CONSOLE = [
 ]
 
 const GENRE = [
-    "FPS", "Action", "Adventure",
-    "Sports", "Family", "RPG", "JRPG",
-    "Third Person Shooter"
+    "Action", "RPG", "Adventure",
+    "Shooter", "Indie", "Platformer",
+    "Massively Multiplayer", "Puzzle"
 ]
 
-
-async function requestGames() {
-    try{
-        const res = await fetch(
-            `https://api.rawg.io/api/games?key=25bb98b15f2e416f94e73a6ee3292733`
-        )
-        const data = await res.json();
-        let gamesList = []
-        data.results.slice(0, 20).forEach(game => {
-            let name = game.name
-            let platform = game.parent_platforms.map(platform => platform.platform.name).join(", ")
-            gamesList.push({name, platform})
-        })        
-        console.log(gamesList)
-    }
-    catch(error) {
-        console.error(error)
-    }
-}
-
-requestGames()
-
-
 const SearchParams = () => {
-    const [platform, setConsole] = useState("")
+    const [game, setGame] = useState("")
+    const [platform, setPlatform] = useState("")
     const [genre, setGenre] = useState("")
     const [games, setGames] = useState([])
-    let data;
 
     useEffect(() => {
         requestGames()
-    }, [platform])
+    }, [])
 
     async function requestGames() {
-        try{
-            const res = await fetch(
-                `https://api.rawg.io/api/games?`
+        try {
+          const res = await fetch(
+            `https://api.rawg.io/api/games`
+          );
+          const data = await res.json();
+          const filteredGames = data.results
+            .filter((games) =>
+              games.name.toLowerCase().includes(game.toLowerCase())
             )
-            data = await res.json();
-            let gamesList = []
-
-            data.results.slice(0, 20).forEach(game => {
-            let name = game.name
-            let console = game.parent_platforms.map(platform => platform.platform.name).join(", ")
-            gamesList.push({name, console})
-        })   
-            setGames([...gamesList])
-        }
-        catch(error) {
-            console.error(error)
+            .filter((game) => {
+                if(!platform) return true
+                return game.parent_platforms.some((gamePlatform) => gamePlatform.platform.name.toLowerCase() == platform.toLowerCase())
+            })
+            .filter((game) => {
+                if(!genre) return true
+                return game.genres.some((gameGenre) => gameGenre.name.toLowerCase() == genre.toLowerCase())
+            })
+            .slice(0, 60)
+            .map((games) => {
+              return {
+                name: games.name,
+                console: games.parent_platforms.map((platform) => platform.platform.name).join(", "),
+                genres: games.genres.map((genre) => genre.name).join(", ")
+              };
+            });
+          setGames([...filteredGames]);
+        } catch (error) {
+          console.error(error);
         }
     }
-    
+
     return (
         <div className="search-params">
-            <form>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    requestGames()
+                }}
+            >
+                {/* Game Search */}
+                <label htmlFor="game">
+                    Game
+                    <input 
+                        onChange={(e) => setGame(e.target.value)} 
+                        id="game" 
+                        value={game} 
+                        placeholder="Game Name" 
+                    />
+                </label>
                 {/* Console Search */}
-                <label htmlFor="console">
+                <label htmlFor="platform">
                     Console
                     <select 
-                        id="console" 
+                        id="platform" 
                         value={platform} 
-                        onChange = {e => {
-                            setConsole(e.target.value)
-                            setGenre("")
-                        }}
+                        onChange = {(e) => setPlatform(e.target.value)}
+                        placeholder="Platform"
                     >
-                        <option />
-                        {CONSOLE.map((platform) => (
-                            <option key={platform}>{platform}</option>
-                        ))}
+                    <option />
+                    {CONSOLE.map((platform) => (
+                        <option key={platform}>{platform}</option>
+                    ))}
                     </select>
                 </label>
                 {/* Game Genre Search */}
@@ -108,13 +110,15 @@ const SearchParams = () => {
                 games.map(game => (
                     <Game 
                         name={game.name}
-                        platform={game.platform} 
+                        platform={game.console} 
+                        genre={game.genres}
                         key={game.id} 
                     />
                 ))
             }
 
         </div>
+
     )
 }
 
