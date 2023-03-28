@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import Game from './Game'
+import Results from './Results'
 import usePlatformList from './usePlatformList'
 
 const CONSOLE = [
@@ -18,7 +18,7 @@ const SearchParams = () => {
     const [platform, setPlatform] = useState("")
     const [genre, setGenre] = useState("")
     const [games, setGames] = useState([])
-    const platformList = usePlatformList(platform)[0]
+    const [platformList] = usePlatformList(platform)[0]
 
     useEffect(() => {
         requestGames()
@@ -106,16 +106,7 @@ const SearchParams = () => {
                 </label>
                 <button>Submit</button>
             </form>
-            {
-                games.map(game => (
-                    <Game 
-                        name={game.name}
-                        platform={game.console} 
-                        genre={game.genres}
-                        key={game.id} 
-                    />
-                ))
-            }
+            <Results games={games} />
 
         </div>
 
