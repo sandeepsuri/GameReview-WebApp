@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import Game from './Game'
+import usePlatformList from './usePlatformList'
 
 const CONSOLE = [
     "PC", "PlayStation", "Xbox", "Nintendo", "Apple Macintosh", "Linux"
@@ -17,6 +18,7 @@ const SearchParams = () => {
     const [platform, setPlatform] = useState("")
     const [genre, setGenre] = useState("")
     const [games, setGames] = useState([])
+    const platformList = usePlatformList(platform)[0]
 
     useEffect(() => {
         requestGames()
@@ -24,9 +26,7 @@ const SearchParams = () => {
 
     async function requestGames() {
         try {
-          const res = await fetch(
-            `https://api.rawg.io/api/games`
-          );
+          const res = await fetch(`https://api.rawg.io/api/games?key=25bb98b15f2e416f94e73a6ee3292733`);
           const data = await res.json();
           const filteredGames = data.results
             .filter((games) =>
