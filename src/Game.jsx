@@ -1,7 +1,6 @@
 import React from "react";
 
-const Game = ({name, platform, genre, trailer, id}) => {
-  let hero = 'https://cdn-icons-png.flaticon.com/512/4021/4021631.png'
+const Game = ({name, platform, genre, trailer, image, id}) => {
   let videoUrl = null
   if(trailer) videoUrl = trailer
   return (
@@ -14,11 +13,11 @@ const Game = ({name, platform, genre, trailer, id}) => {
           </video>
         ) : (
           <div className="image-container">
-          <img src={hero} alt={name} />
+          <img src={image} alt={name} />
           </div>
         )}
       
-      <div className="=info">
+      <div className="=info container">
         <h1>{name}</h1>
         <h2>{platform} - {genre}</h2>
       </div>

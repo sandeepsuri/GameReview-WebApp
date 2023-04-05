@@ -13,6 +13,7 @@ const Results = ({ games }) => {
                         platform={game.console} 
                         genre={game.genres}
                         trailer={game.trailer}
+                        image={game.img}
                         key={game.id}
                     />
                 ))

@@ -5,7 +5,6 @@ const localCache = {}
 export default function usePlatformList(platform) {
     const [platformList, setPlatformList] = useState([])
     const [status, setStatus] = useState("unloaded")
-    console.log('platform list')
     useEffect(() => {
         if (!platform) setPlatformList([])
         else if(localCache[platform]) setPlatformList[platform]

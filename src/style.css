@@ -61,16 +61,16 @@
     height: 0;
     padding-bottom: 56.25%;
     position: relative;
-    overflow: hidden
+    overflow: hidden;
   }
 
   .game-preview video,
   .image-container img {
-    clip-path: circle(50% at 50% 50%);
-    width: 100px;
-    height: 100px;
+    /* clip-path: circle(50% at 50% 50%); */
+    width: 100%;
+    height: 100%;
     float: left;
-    margin: 0px 20px 0px 10px;
+    /* margin: 0px 20px 0px 10px; */
   }
   
   .game img {
@@ -81,6 +81,11 @@
   .game video {
     width: 100px;
     min-height: 100px;
+  }
+
+  .container {
+    overflow: auto;
+    max-height: 100%;
   }
   
   .info {

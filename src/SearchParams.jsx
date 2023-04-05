@@ -13,42 +13,6 @@ const GENRE = [
     "Massively Multiplayer", "Puzzle"
 ]
 
-async function requestGames() {
-    try{
-        const res = await fetch(
-            `https://api.rawg.io/api/games?key=25bb98b15f2e416f94e73a6ee3292733`
-        )
-        const data = await res.json();
-        let gamesList = []
-        data.results.slice(0, 20)
-        .map(async (games) => {
-            let name = games.name
-            let platform = games.parent_platforms.map(platform => platform.platform.name).join(", ")
-            let id = games.id
-            const videoRes = await fetch(`https://api.rawg.io/api/games/${games.id}/movies?key=25bb98b15f2e416f94e73a6ee3292733`);
-            const videoData = await videoRes.json()
-            const trailerURL = videoData.results.length > 0 ? videoData.results[0].data.max : ''
-            gamesList.push({name, platform, id, trailerURL});
-        // .forEach(game => {
-        //     let name = game.name
-        //     let platform = game.parent_platforms.map(platform => platform.platform.name).join(", ")
-        //     let id = game.id
-        //     const videoRes =  fetch(`https://api.rawg.io/api/games/${games.id}/movies?key=25bb98b15f2e416f94e73a6ee3292733`);
-        //     const videoData =  videoRes.json()
-        //     const trailerURL = videoData.results.length > 0 ? videoData.results[0].data.max : ''
-        //     gamesList.push({name, platform, id, trailerURL})
-        // })        
-        })
-        console.log(gamesList)
-    }
-    catch(error) {
-        console.error(error)
-    }
-}
-
-requestGames()
-
-
 const SearchParams = () => {
     const [game, setGame] = useState("")
     const [platform, setPlatform] = useState("")
@@ -62,7 +26,7 @@ const SearchParams = () => {
 
     async function requestGames() {
         try {
-          const res = await fetch(`https://api.rawg.io/api/games?key=`);
+          const res = await fetch(`https://api.rawg.io/api/games?key=25bb98b15f2e416f94e73a6ee3292733`);
           const data = await res.json();
           const filteredGames = data.results
             .filter((games) =>
@@ -78,19 +42,26 @@ const SearchParams = () => {
             })
             .slice(0, 60)
             .map(async (games) => {
-                const videoRes = await fetch(`https://api.rawg.io/api/games/${games.id}/movies?key=`);
+                const videoRes = await fetch(`https://api.rawg.io/api/games/${games.id}/movies?key=25bb98b15f2e416f94e73a6ee3292733`);
                 const videoData = await videoRes.json()
                 const trailerURL = videoData.results.length > 0 ? videoData.results[0].data.max : ''
+               
+                const imageURL = await fetch(`https://api.rawg.io/api/games/${games.id}/screenshots?key=25bb98b15f2e416f94e73a6ee3292733`)
+                const imageData = await imageURL.json()
+                const img = imageData.results[0].image
+                
                 return {
                     id: games.id,
                     name: games.name,
                     console: games.parent_platforms.map((platform) => platform.platform.name).join(", "),
                     genres: games.genres.map((genre) => genre.name).join(", "),
-                    trailer: trailerURL
+                    trailer: trailerURL,
+                    img: img
               };
             });
             const games = await Promise.all(filteredGames)
             setGames([...games]);
+            console.log(games)
         } catch (error) {
           console.error(error);
         }
