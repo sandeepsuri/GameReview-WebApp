@@ -1,14 +1,15 @@
-import React from "react";
+/* eslint-disable react/react-in-jsx-scope */
+import { Link } from 'react-router-dom';
 
 const Game = ({name, platform, genre, trailer, image, id}) => {
   let videoUrl = null
   if(trailer) videoUrl = trailer
   return (
-    <a href={`/details/${id}`} className='game'>
+    <Link to={`/details/${id}`} className='game'>
       
         {videoUrl ? (
           // eslint-disable-next-line jsx-a11y/media-has-caption
-          <video width="100%" height="100%" controls>
+          <video controls>
             <source src={videoUrl} type="video/mp4" />
           </video>
         ) : (
@@ -21,7 +22,7 @@ const Game = ({name, platform, genre, trailer, image, id}) => {
         <h1>{name}</h1>
         <h2>{platform} - {genre}</h2>
       </div>
-    </a>
+    </Link>
   );
 };
   

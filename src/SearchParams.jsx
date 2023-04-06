@@ -26,7 +26,7 @@ const SearchParams = () => {
 
     async function requestGames() {
         try {
-          const res = await fetch(`https://api.rawg.io/api/games?key=25bb98b15f2e416f94e73a6ee3292733`);
+          const res = await fetch(`https://api.rawg.io/api/games?key=`);
           const data = await res.json();
           const filteredGames = data.results
             .filter((games) =>
@@ -42,13 +42,19 @@ const SearchParams = () => {
             })
             .slice(0, 60)
             .map(async (games) => {
-                const videoRes = await fetch(`https://api.rawg.io/api/games/${games.id}/movies?key=25bb98b15f2e416f94e73a6ee3292733`);
+                const videoRes = await fetch(`https://api.rawg.io/api/games/${games.id}/movies?key=`);
                 const videoData = await videoRes.json()
                 const trailerURL = videoData.results.length > 0 ? videoData.results[0].data.max : ''
                
-                const imageURL = await fetch(`https://api.rawg.io/api/games/${games.id}/screenshots?key=25bb98b15f2e416f94e73a6ee3292733`)
+                const imageURL = await fetch(`https://api.rawg.io/api/games/${games.id}/screenshots?key=`)
                 const imageData = await imageURL.json()
                 const img = imageData.results[0].image
+
+                // const gameDetails = await fetch(`https://api.rawg.io/api/games/${games.id}?key=`)
+                // const gameDetailsData = await gameDetails.json()
+
+                // const name = gameDetailsData.name;
+                // const img = gameDetailsData.background_image;
                 
                 return {
                     id: games.id,

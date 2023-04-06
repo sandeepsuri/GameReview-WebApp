@@ -10,6 +10,7 @@ const Results = ({ games }) => {
                 games.map(game => (
                     <Game
                         name={game.name}
+                        id={game.id}
                         platform={game.console} 
                         genre={game.genres}
                         trailer={game.trailer}
