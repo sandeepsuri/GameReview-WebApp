@@ -13,7 +13,7 @@ export default function usePlatformList(platform) {
         async function requestPlatformList() {
             setPlatformList([]);
             setStatus("loading")
-            const res = await fetch(`https://api.rawg.io/api/games?key=25bb98b15f2e416f94e73a6ee3292733`)
+            const res = await fetch(`https://api.rawg.io/api/games?key=`)
             const json = await res.json()
 
             const filterPlatforms = json.results

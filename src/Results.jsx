@@ -5,7 +5,9 @@ const Results = ({ games }) => {
     return (
         <div className='search'>
             {!games.length ? (
-                <h1>No Games Found</h1>
+                <div className="loading-pane">
+                    <h2 className="loader">🎮</h2>
+                </div>
             ) : (
                 games.map(game => (
                     <Game

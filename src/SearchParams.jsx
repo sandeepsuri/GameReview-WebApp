@@ -18,7 +18,6 @@ const SearchParams = () => {
     const [platform, setPlatform] = useState("")
     const [genre, setGenre] = useState("")
     const [games, setGames] = useState([])
-    const [platformList] = usePlatformList(platform)[0]
 
     useEffect(() => {
         requestGames()
@@ -49,12 +48,6 @@ const SearchParams = () => {
                 const imageURL = await fetch(`https://api.rawg.io/api/games/${games.id}/screenshots?key=`)
                 const imageData = await imageURL.json()
                 const img = imageData.results[0].image
-
-                // const gameDetails = await fetch(`https://api.rawg.io/api/games/${games.id}?key=`)
-                // const gameDetailsData = await gameDetails.json()
-
-                // const name = gameDetailsData.name;
-                // const img = gameDetailsData.background_image;
                 
                 return {
                     id: games.id,
