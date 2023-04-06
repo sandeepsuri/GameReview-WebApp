@@ -7,7 +7,7 @@ import Details from "./Details";
 const App = () => {
   return (
     <BrowserRouter>
-      <header>
+      <header className="titleStyle">
         <Link to="/">Game Reviews</Link>
       </header>
       <Routes>
