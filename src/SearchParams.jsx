@@ -1,7 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import Results from './Results'
-import usePlatformList from './usePlatformList'
+import fetchSearch from './fetchSearch'
 
 const CONSOLE = [
     "PC", "PlayStation", "Xbox", "Nintendo", "Apple Macintosh", "Linux"
@@ -14,6 +15,11 @@ const GENRE = [
 ]
 
 const SearchParams = () => {
+    // const [requestParams, setRequestParams] = useState({
+    //     game: "",
+    //     platform: "",
+    //     genre: ""
+    // })
     const [game, setGame] = useState("")
     const [platform, setPlatform] = useState("")
     const [genre, setGenre] = useState("")
@@ -65,6 +71,8 @@ const SearchParams = () => {
           console.error(error);
         }
     }
+
+    // const results = useQuery(["search", requestParams], fetchSearch)
 
     return (
         <div className="search-params">
